@@ -26,13 +26,13 @@ const loadMessage = () => {
 const mainScreen = () => {
   inquire.prompt([
     {
-      message: "What would you like to do?",
+      message: `What would you like to do?\n Current Funds: $${funds}`,
       type: "list",
       name: "action",
       choices: [{name:"See Store", value:1}, {name:"Purchase items", value: 2}, {name:"Return an item", value:3}, {name:"Search for an item", value:4}, {name:"Leave Shop", value:5}]
     }
   ]).then(function(res) {
-    console.log(res.action);
+    // console.log(res.action);
     if (res.action === 1) {
       seeItem();
     } else if (res.action === 2) {
@@ -94,31 +94,31 @@ const buyItem = () => {
 const confirmBuy =(selectArr) => {
   inquire.prompt([
     {
-      message: "Buy this item?",
+      message: `Buy this item?\n Current Funds: $${funds}`,
       type: "list",
       choices: [...selectArr, {name:"cancel", value: false, short:"cancel"}],
       name: "confirm",
       default: false
     }
   ]).then(function(res) {
-    console.log(res.confirm + " <= confirmation value")
-    console.log(typeof res.confirm);
     if(res.confirm) {
-      connection.query("SELECT * FROM inventory WHERE ?", {id: res.confirm}, function(resp) {
+      connection.query("SELECT * FROM inventory WHERE ?", {id: res.confirm}, function(err, resp) {
         console.log(resp);
-        console.log("current stock: "+ resp.stock);
-        if (resp.stock > 0) {
-          let newValue = resp.stock - 1 ;
-          connection.query(`UPDATE inventory SET ? WHERE ?`, [{stock: newValue}, {id: res.confirm}], function(response) {
+        console.log("current stock: "+ resp[0].stock);
+        console.log("sold: " + resp[0].sold);
+        if (resp[0].stock > 0) {
+          let newValue = resp[0].stock - 1 ;
+          let newSold = resp[0].sold + 1;
+          connection.query(`UPDATE inventory SET ?,? WHERE ?`, [{stock: newValue}, {sold: newSold}, {id: res.confirm}], function(err, response) {
+            // console.log(response);
             console.log("Purchased Item!");
-            funds -= resp[price]
+            funds -= resp[0].price;
             console.log(`You have $${funds} left`);
             mainScreen();
           });
         };
       });
     } else if (res.confirm === false) {
-      console.log("Sorry, out of stock! \n");
       mainScreen();
     };
   });
