@@ -1,6 +1,7 @@
 var inquire = require('inquirer');
 var mysql = require('mysql');
 var keys = require('./keys.js');
+var table = require('console.table')
 
 var connection = mysql.createConnection({
   host: "localhost",
@@ -18,7 +19,7 @@ connection.connect(function(err) {
 });
 
 const loadMessage = () => {
-  console.log("\x1b[4m" +"\x1b[33m" +"\n []   Welcome to Binyan's hole-in-the-wall Nintendo Fan Shop!   [] \n");
+  console.log("\x1b[4m" +"\x1b[33m" +"\n Welcome to Binyan's hole-in-the-wall Nintendo Fan Shop! \n");
   console.log("\x1b[0m"+"\x1b[33m"+"We're so thrifty here that we can't afford a front end user interface! \n");
   console.log("\x1b[0m"+"\x1b[32m"+`Current Funds: $${funds} \n`);
   mainScreen();
@@ -58,10 +59,11 @@ const seeItem = () => {
       choices: ["video game", "amiibo"]
     }
     ]).then(function(res) {
-      console.log("chosen category: "+ res.category);
+      console.log("chosen category: "+ res.category +"/n");
       connection.query("SELECT * FROM inventory WHERE ?", {category: res.category}, function(err, res){
       if (err) throw err;
-      console.log(JSON.stringify(res, null, 2));
+      // console.log(JSON.stringify(res, null, 2));
+      console.table(res)
       mainScreen();
   })
   })
@@ -105,8 +107,8 @@ const confirmBuy = (selectArr) => {
     if(res.confirm) {
       connection.query("SELECT * FROM inventory WHERE ?", {id: res.confirm}, function(err, resp) {
         // console.log(resp);
-        console.log("current stock: "+ resp[0].stock);
-        console.log("sold: " + resp[0].sold);
+        // console.log("current stock: "+ resp[0].stock);
+        // console.log("sold: " + resp[0].sold);
         if (resp[0].stock > 0) {
           let newValue = resp[0].stock - 1 ;
           let newSold = resp[0].sold + 1;
@@ -115,11 +117,11 @@ const confirmBuy = (selectArr) => {
             console.log("Purchased Item!");
             funds -= resp[0].price;
             connection.query(`INSERT INTO fanInventory (category, console, item, stock, price) VALUES("${resp[0].category}", "${resp[0].console}", "${resp[0].item}", 1, ${resp[0].price})`, function(err, response2) {
-              console.log(response2);
-              console.log(resp[0].category, resp[0].console, resp[0].item, 1, resp[0].price);
-              console.log("\x1b[37m"+"Your item stash updated!");
+              // console.log(response2);
+              // console.log(resp[0].category, resp[0].console, resp[0].item, 1, resp[0].price);
+              console.log("\x1b[33m"+"Your item stash updated!");
               console.log(`\x1b[31m You have $${funds} left`);
-              console.log(`\n \x1b[34m Anything else for today? \n`);
+              console.log(`\n \x1b[36m Anything else for today? \n`);
               mainScreen();
             });
           });
@@ -162,18 +164,18 @@ const returnItem = () => {
             let newValue = resp[0].stock + 1 ;
             connection.query(`UPDATE inventory SET ? WHERE ?`, [{stock: newValue}, {id: res.confirm}], function(err, response) {
               // console.log(response);
-              console.log("Sold item to store! Thank you!");
+              console.log("\x1b[36m"+"Sold item to store! Thank you!");
               funds += resp[0].price*0.70;
               connection.query(`DELETE FROM fanInventory WHERE ?`, {id: res.sellItem}, function(err, response2) {
-                console.log("Your item stash updated!");
-                console.log(`You have $${funds} now \n`);
+                console.log("\x1b[33m"+"Your item stash updated!");
+                console.log(`\x1b[32m You have $${funds} now \n`);
                 mainScreen();
               });
             });
           };
         });
       } else if (res.sellItem === false) {
-        console.log(`\n \x1b[34m Anything else for today? \n`);
+        console.log(`\n \x1b[36m Anything else for today? \n`);
         mainScreen();
     };
     });
@@ -199,7 +201,7 @@ const searchItem = () => {
           value: res[0].id,
           short: res[0].item
         });
-      // console.log(selectArr);
+      console.log("\n"+"\x1b[33m"+selectArr[0].name+"\n");
       mainScreen();
     });
   });
