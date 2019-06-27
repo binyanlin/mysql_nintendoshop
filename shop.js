@@ -14,11 +14,11 @@ let funds = 300;
 
 connection.connect(function(err) {
   if (err) throw err;
-  console.log("Connection ID is " + connection.threadId);
+  // console.log("Connection ID is " + connection.threadId);
 });
 
 const loadMessage = () => {
-  console.log("\x1b[4m" +"\x1b[33m" +"\n Welcome to Binyan's hole-in-the-wall Nintendo Fan Shop! \n");
+  console.log("\x1b[4m" +"\x1b[33m" +"\n []   Welcome to Binyan's hole-in-the-wall Nintendo Fan Shop!   [] \n");
   console.log("\x1b[0m"+"\x1b[33m"+"We're so thrifty here that we can't afford a front end user interface! \n");
   console.log("\x1b[0m"+"\x1b[32m"+`Current Funds: $${funds} \n`);
   mainScreen();
@@ -173,7 +173,7 @@ const returnItem = () => {
           };
         });
       } else if (res.sellItem === false) {
-        console.log(`\n Anything else for today? \n`);
+        console.log(`\n \x1b[34m Anything else for today? \n`);
         mainScreen();
     };
     });
@@ -183,7 +183,7 @@ const returnItem = () => {
 const searchItem = () => {
   inquire.prompt([
     {
-      message: "What would you like to search for? (type item name)",
+      message: "\x1b[34m"+ "What would you like to search for? (type item name)",
       type: "input",
       name: "itemBuy"
     }
