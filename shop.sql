@@ -38,3 +38,13 @@ VALUES
 ("amiibo","Wii", "Fox", 4, 40.00, 2),
 ("amiibo", "Wii", "Rosalina and Luma", 6, 45.00, 5),
 ("amiibo", "Wii", "Greninja", 5, 35.07, 5);
+
+CREATE TABLE fanInventory(
+  id INT NOT NULL AUTO_INCREMENT,
+  category VARCHAR(100) NOT NULL,
+  console VARCHAR(100) NOT NULL,
+  item VARCHAR(100) NOT NULL,
+  stock INT(5) NOT NULL,
+  price DECIMAL(10,2) NOT NULL,
+  PRIMARY KEY (id)
+);
