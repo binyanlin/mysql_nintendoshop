@@ -18,6 +18,8 @@ set up a SQL database from the shop.sql, then run Node shop.js in your terminal.
 * Purchasing items from the store decreases your funds (which start at $300). The items get added into your inventory and the stock will decrease by 1.
 ![example3](https://i.imgur.com/3ZuhmgL.png)
 * Selecting return an item will pull up a separate mySQL table with your own inventory, which the shop will buy back at 70% of the shop price (GameStop style, except GameStop buys back at much worse rates).
+![example4](https://i.imgur.com/vBIwtvD.png)
+* Selecting Exit Shop exits the program with a thank you.
 
 
 
