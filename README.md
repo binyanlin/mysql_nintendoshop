@@ -4,7 +4,7 @@ This application was created for applying mySQL and Node Inquirer to interactive
 set up a SQL database from the shop.sql, then run Node shop.js in your terminal.
 
 ### How it works: 
-![example1](https://imgur.com/a/I4ZwiOw)  
+![example1](https://i.imgur.com/9WGimEz.png)  
 * Inquirer will load a CLI text that allows you a handful of options. Selecting "See Store" shows a table of all the items.
 ![example2](https://i.imgur.com/JHhOahy.png)
 * Purchasing items from the store decreases your funds (which start at $300). The items get added into your inventory and the stock will decrease by 1.
