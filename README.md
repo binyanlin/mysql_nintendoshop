@@ -4,6 +4,7 @@ This application was created for applying mySQL and Node Inquirer to interactive
 set up a SQL database from the shop.sql, then run Node shop.js in your terminal.
 
 ### How it works: 
+* Start up the CLI app with node shop.js
 ![example1](https://i.imgur.com/9WGimEz.png)  
 * Inquirer will load a CLI text that allows you a handful of options. Selecting "See Store" shows a table of all the items.
 ![example2](https://i.imgur.com/JHhOahy.png)
